@@ -4,9 +4,9 @@
 YEAR=`date +%Y`
 MONTH=`date +%B`
 DAY=`date +%d`
-VERS=02
+VERS=00
 
-BASEDOC=draft-haynes-nfsv4-layoutwcc
+BASEDOC=draft-ietf-nfsv4-layoutwcc
 
 all: $(BASEDOC)-$(VERS).xml
 
