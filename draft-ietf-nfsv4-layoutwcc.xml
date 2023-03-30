@@ -239,36 +239,39 @@
 
    <section anchor="ss_op_LAYOUT_WCC_impl" numbered="true" removeInRFC="false" toc="default">
      <name>Implementation</name>
-     <t>
-       The only way for the metadata server to detect modifications
-       to the data file is to probe the data servers via a GETATTR. It
-       can compare the mtime results across multiple calls to detect a
-       NFSv3 WRITE operation by the client. Likewise, the atime results
-       indicate the client having issued a NFSv3 READ operation. As such,
-       the client should leverage the LAYOUT_WCC operation whenever it
-       has the belief that the metadata server would need to refresh
-       the attributes of the data files.  While The client can send a
-       LAYOUT_WCC at any time, there are times it will want to do this
-       operation in order to avoid having the metadata server issue
-       NFSv3 GETATTR requests to the data servers:
-     </t>
-     <ul spacing="normal">
-       <li>
-         Whenever it sends a GETATTR for any of the following attributes: size, space_used, change, 
-         time_access, time_metadata, and time_modify.
-       </li>
-       <li>
-         Whenever it sends an NFS4ERR_ACCESS error via LAYOUTRETURN or LAYOUTERROR - it could
-         have already gotten the NFSv3 uid and gid values back in the WCC of the WRITE,
-         READ, or COMMIT operation which got the error.
-       </li>
-       <li>
-         Whenever it sends a SETATTR to refresh the proxied times ((See Section 4 of <xref
-         target="delstid" format="default" sectionFormat="of"/>) - the metadata server is
-         going to want to correlate these times in order to detect later modification to
-         the data file.
-       </li>
-     </ul>
+     <section anchor="ss_op_LAYOUT_WCC_examples" numbered="true" removeInRFC="false" toc="default">
+       <name>Examples of when to use LAYOUT_WCC</name>
+       <t>
+         The only way for the metadata server to detect modifications
+         to the data file is to probe the data servers via a GETATTR. It
+         can compare the mtime results across multiple calls to detect a
+         NFSv3 WRITE operation by the client. Likewise, the atime results
+         indicate the client having issued a NFSv3 READ operation. As such,
+         the client should leverage the LAYOUT_WCC operation whenever it
+         has the belief that the metadata server would need to refresh
+         the attributes of the data files.  While The client can send a
+         LAYOUT_WCC at any time, there are times it will want to do this
+         operation in order to avoid having the metadata server issue
+         NFSv3 GETATTR requests to the data servers:
+       </t>
+       <ul spacing="normal">
+         <li>
+           Whenever it sends a GETATTR for any of the following attributes: size, space_used, change, 
+           time_access, time_metadata, and time_modify.
+         </li>
+         <li>
+           Whenever it sends an NFS4ERR_ACCESS error via LAYOUTRETURN or LAYOUTERROR - it could
+           have already gotten the NFSv3 uid and gid values back in the WCC of the WRITE,
+           READ, or COMMIT operation which got the error.
+         </li>
+         <li>
+           Whenever it sends a SETATTR to refresh the proxied times ((See Section 4 of <xref
+           target="delstid" format="default" sectionFormat="of"/>) - the metadata server is
+           going to want to correlate these times in order to detect later modification to
+           the data file.
+         </li>
+       </ul>
+     </section>
    </section>
 
    <section anchor="ss_op_LAYOUT_WCC_errs" numbered="true" removeInRFC="false" toc="default">
