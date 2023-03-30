@@ -278,7 +278,7 @@
        <t>
          The NFSv3 attributes returned in the WCC of WRITE, READ, and COMMIT are a smaller subset
          of what can be transmitted as a NFSv4 attribute. The mapping of NFSv3 to NFSv4 attributes
-         shown in Table <xref target="tbl:mappings" format="counter"/> also details which attributes
+         shown in <xref target="table_mappings"/> also details which attributes
          the LAYOUT_WCC <bcp14>SHOULD</bcp14> be providing to the metadata server, Both the uid
          and gid are stringified into their respective attributes of owner and owner_group.
          The reason to provide these two attributes is in case of NFS4ERR_ACCESS, the metadata
@@ -287,18 +287,19 @@
          modify the expected values it has cached.
        </t>
 
-       <texttable anchor='tbl:mappings' title="NFSv3 to NFSv4 Attribute Mappings">
-         <ttcol align='left'>NFSv3 Attribute</ttcol>
-         <ttcol align='left'>NFSv4 Attribute</ttcol>
+       <table anchor='table_mappings'>
+         <tbody>
+         <tr><th>NFSv3 Attribute</th> <th>NFSv4 Attribute</th></tr>
 
-         <c>size</c>  <c>size</c>
-         <c>used</c>  <c>space_used</c>
-         <c>uid</c>   <c>owner</c>
-         <c>gid</c>   <c>owner_group</c>
-         <c>atime</c> <c>time_access</c>
-         <c>mtime</c> <c>time_modify</c>
-         <c>ctime</c> <c>time_metadata</c>
-       </texttable> 
+         <tr><td>size</td>  <td>size</td></tr>
+         <tr><td>used</td>  <td>space_used</td></tr>
+         <tr><td>uid</td>   <td>owner</td></tr>
+         <tr><td>gid</td>   <td>owner_group</td></tr>
+         <tr><td>atime</td> <td>time_access</td></tr>
+         <tr><td>mtime</td> <td>time_modify</td></tr>
+         <tr><td>ctime</td> <td>time_metadata</td></tr>
+         </tbody>
+       </table>
 
      </section>
    </section>
