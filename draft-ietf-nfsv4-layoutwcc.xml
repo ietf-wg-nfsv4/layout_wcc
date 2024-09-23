@@ -204,7 +204,14 @@
      <t>
        In this document, we present a new NFSv4.2 operation called
        LAYOUT_WCC, which allows the client to update the metadata
-       server with information from the storage devices.
+       server with information from the storage devices. The client
+       is responsible for taking the NFSv3 WCC information (which
+       is returned by the 3 operations it is allowed to use) and
+       pass that back to the metadata server in the NFSv4.2 attributes.
+       The metadata server <bcp14>MAY</bcp14> then avoid costly
+       NFSv3 GETATTR calls to the storage devices. As this is a weak
+       model, the metatdate server <bcp14>MAY</bcp14> make such
+       calls anyway in order to strengthen the model.
      </t>
      <t><cref anchor="AI2" source="TH">Can it go into LAYOUTRETURN?</cref></t>
 
