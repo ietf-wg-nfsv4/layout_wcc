@@ -68,7 +68,7 @@
   <name>Introduction</name>
   <t>
     In the Network File System version4 (NFSv4) with a Parallel NFS
-    (pNFS) Flexible File Layout (<xref target="RFC8435" format="default"
+    (pNFS) Flexible File Layout (see Section 12 of <xref target="RFC8435" format="default"
     sectionFormat="of"/>) server, there is no mechanism for the data
     servers to update the metadata servers for when the data portion
     of the file is modified.  The metadata server needs this knowledge
@@ -144,47 +144,26 @@
   </section>
 </section>
 
-<section anchor="op_LAYOUT_WCC" numbered="true" removeInRFC="false" toc="default">
-  <name>Operation 77: LAYOUT_WCC - Layout Weak Cache Consistency</name>
-  <section toc="exclude" anchor="ss_op_LAYOUT_WCC_A" numbered="true">
-    <name>ARGUMENT</name>
-    <sourcecode name="" type="" markers="true"><![CDATA[
-/// struct LAYOUT_WCC4args {
-///         stateid4        lowa_stateid;
-///         layouttype4     lowa_type;
-///         opaque          lowa_body<>;
-/// };
-]]></sourcecode>
-   </section>
-   <section toc="exclude" anchor="ss_op_LAYOUT_WCC_R" numbered="true">
-     <name>RESULT</name>
-     <sourcecode name="" type="" markers="true"><![CDATA[
-/// struct LAYOUT_WCC4res {
-///         nfsstat4                lowr_status;
-/// };
-]]></sourcecode>
-   </section>
-   <section toc="exclude" anchor="ss_op_LAYOUT_WCC_D" numbered="true">
-     <name>DESCRIPTION</name>
+<section anchor="wcc" numbered="true" removeInRFC="false" toc="default">
+  <name>Weak Cache Consistency (WCC)</name>
      <t>
-       When using pNFS (See Section 12 of <xref target="RFC8881"
-       format="default" sectionFormat="of"/>), the client is most likely
-       to be performing file operations to the storage device and not the
-       metadata server. With a NFSv3 data server in the flexible
-       files layout type (in <xref target="RFC8435" format="default"
-       sectionFormat="of"/>) there is no control protocol (<xref target="RFC8434"
-       format="default" sectionFormat="of"/>) between the
-       metadata server and the storage device. In order to update the
-       metadata state of the file, the metadata server will need to track
-       the metadata state of the data file - once the layout is issued,
-       it is not able to see the NFSv3 file operations from the client
-       to the storage device. Thus the metadata server will be required
-       to query the storage device for the data file attributes.
+       A layout type for pNFS enables the metadata server to tell the
+       client both the storage protocol and location of data to be used
+       to communicate with the storage devices.
+       The Flex Files Layout Type (in <xref target="RFC8435" format="default"
+       sectionFormat="of"/>) details how NFSv3 data servers can be accessed.
+       The client is only allowed to perform NFSv3 READ, WRITE, and COMMIT
+       operations on the file handles provided in the layout. Because
+       there is no contol protocol (see <xref target="RFC8434" format="default" sectionFormat="of"/>)
+       possible with all data servers, NFSv3 is used as the control protocol.
+       As such, the NFSv3 CREATE, GETATTR, and SETATTR are operations commonly
+       used by the metadata server.
      </t>
+     <t><cref anchor="AI1" source="TH">storage device or data server?</cref></t>
      <t>
        For example, the metadata server
-       would issue a NFSv3 GETATTR to the storage device. These queries
-       are most likely triggered in response to a NFSv4 GETATTR to the
+       would issue a NFSv3 GETATTR to the storage device. This query
+       is most likely triggered in response to a NFSv4 GETATTR issued by a client to the
        metadata server. Not only are these NFSv3 GETATTRs to the storage device
        individually expensive, the storage device can become inundated by
        a storm of such requests. NFSv3 solved a similar issue by having
@@ -205,6 +184,13 @@
        allowing the client to decide if it needs that information.
      </t>
      <t>
+       Whilst NFSv4 got rid of the requirement for WCC information to
+       be supplied by the WRITE or READ operations, the introduction
+       of pNFS re-introduces the same problem. The metadata server
+       has to communicate with the storage devices in order to get
+       at the data which could be provided by a WCC model.
+     </t>
+     <t>
        With the flexible files layout type, the client can leverage
        the NFSv3 WCC to service the proxying of times (See Section 4 of <xref
        target="delstid" format="default" sectionFormat="of"/>).
@@ -215,6 +201,47 @@
        pieces of information. Also, the client is limited to sending
        that information only when it returns the delegation.
      </t>
+     <t>
+       In this document, we present a new NFSv4.2 operation called
+       LAYOUT_WCC, which allows the client to update the metadata
+       server with information from the storage devices.
+     </t>
+     <t><cref anchor="AI2" source="TH">Can it go into LAYOUTRETURN?</cref></t>
+
+</section>
+
+<section anchor="op_LAYOUT_WCC" numbered="true" removeInRFC="false" toc="default">
+  <name>Operation 77: LAYOUT_WCC - Layout Weak Cache Consistency</name>
+  <section toc="exclude" anchor="ss_op_LAYOUT_WCC_A" numbered="true">
+    <name>ARGUMENT</name>
+    <sourcecode name="" type="" markers="true"><![CDATA[
+/// struct LAYOUT_WCC4args {
+///         stateid4        lowa_stateid;
+///         layouttype4     lowa_type;
+///         opaque          lowa_body<>;
+/// };
+]]></sourcecode>
+   <t>
+     stateid4 is defined in Section 3.3.12 of <xref target="RFC8881"
+       format="default" sectionFormat="of"/>.
+     layouttype4 is defined in Section 3.3.13 of <xref target="RFC8881"
+       format="default" sectionFormat="of"/>.
+   </t>
+   </section>
+   <section toc="exclude" anchor="ss_op_LAYOUT_WCC_R" numbered="true">
+     <name>RESULT</name>
+     <sourcecode name="" type="" markers="true"><![CDATA[
+/// struct LAYOUT_WCC4res {
+///         nfsstat4                lowr_status;
+/// };
+]]></sourcecode>
+   <t>
+     nfsstat4 is defined in Section 3.2 of <xref target="RFC8881"
+       format="default" sectionFormat="of"/>.
+   </t>
+   </section>
+   <section toc="exclude" anchor="ss_op_LAYOUT_WCC_D" numbered="true">
+     <name>DESCRIPTION</name>
      <t>
        The current filehandle and the lowa_stateid identifies the
        particular layout for the LAYOUT_WCC operation. The lowa_type
