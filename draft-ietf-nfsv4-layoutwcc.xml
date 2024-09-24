@@ -67,7 +67,7 @@
 <section anchor="sec_intro" numbered="true" removeInRFC="false" toc="default">
   <name>Introduction</name>
   <t>
-    In the Network File System version4 (NFSv4) with a Parallel NFS
+    In the Network File System version 4 (NFSv4) with a Parallel NFS
     (pNFS) Flexible File Layout (see Section 12 of <xref target="RFC8435" format="default"
     sectionFormat="of"/>) server, there is no mechanism for the data
     servers to update the metadata servers for when the data portion
@@ -76,7 +76,7 @@
     client is using NFSv3 as the protocol with the data server, it can
     leverage weak cache consistency (WCC) to update the metadata server
     of the attribute changes.  In this document, we introduce a new
-    operation called LAYOUT_WCC which allows the client to periodically
+    operation called LAYOUT_WCC to NFSv4.2 which allows the client to periodically
     report the attributes of the data files to the metadata server.
   </t>
 
@@ -120,6 +120,16 @@
         information for a file system object.
       </dd>
 
+      <dt>storage device:</dt>
+      <dd>
+        the target to which clients may direct I/O requests
+        when they hold an appropriate layout.  Note that each data server
+        is a storage device but that some storage device are not data
+        servers. (See Section 2.1 of <xref target="RFC8434" format="default" sectionFormat="of"/>
+        for a discussion on the difference between a data server
+        and a storage device.)
+      </dd>
+
       <dt>weak cache consistency (WCC):</dt>
       <dd>
         In NFSv3, WCC allows the client to check for file attribute changes
@@ -152,20 +162,42 @@
        to communicate with the storage devices.
        The Flex Files Layout Type (in <xref target="RFC8435" format="default"
        sectionFormat="of"/>) details how NFSv3 data servers can be accessed.
-       The client is only allowed to perform NFSv3 READ, WRITE, and COMMIT
-       operations on the file handles provided in the layout. Because
+       The client is only allowed to perform NFSv3 READ (see Section 3.3.6 of <xref target="RFC1813"
+       format="default" sectionFormat="of"/>), WRITE (see Section 3.3.6 of <xref target="RFC1813"
+       format="default" sectionFormat="of"/>), and COMMIT (see Section 3.3.21 of <xref target="RFC1813"
+        format="default" sectionFormat="of"/>)
+       operations on the file handles provided in the layout. I.e., the client
+       is only allowed to use NFSv3 operations which directly act on the data portion of the
+       data file.
+     </t>
+     <t>
+       Because
        there is no contol protocol (see <xref target="RFC8434" format="default" sectionFormat="of"/>)
        possible with all data servers, NFSv3 is used as the control protocol.
-       As such, the NFSv3 CREATE, GETATTR, and SETATTR are operations commonly
-       used by the metadata server.
+       As such, the NFSv3 CREATE (see Section 3.3.8 of <xref target="RFC1813"
+       format="default" sectionFormat="of"/>), GETATTR (see Section 3.3.1 of <xref target="RFC1813"
+       format="default" sectionFormat="of"/>), and SETATTR (see Section 3.3.2 of <xref target="RFC1813"
+       format="default" sectionFormat="of"/>) are operations commonly
+       used by the metadata server. I.e., the metadata server is only allowed to use
+       NFSv3 operations which directly act on the metadata portion of the data file.
+       GETATTR allows the metadata server to mainly retrieve the mtime (modify time),
+       ctime (change time), and atime (access time). The metadata server
+       can use this information to determine if the client modified the
+       file whilst it held an iomode of LAYOUTIOMODE4_RW (see Section 3.3.20
+       of <xref target="RFC8881" format="default" sectionFormat="of"/>). Then
+       it can determine the time_modify (see Section 5.8.2.43
+       of <xref target="RFC8881" format="default" sectionFormat="of"/>), time_metadata (see Section 5.8.2.42
+       of <xref target="RFC8881" format="default" sectionFormat="of"/>), and time_access (see Section 5.8.2.37
+       of <xref target="RFC8881" format="default" sectionFormat="of"/>) for
+       the metadata file. I.e., the information to return to clients
+       in a NFSv4.2 GETATTR response.
      </t>
-     <t><cref anchor="AI1" source="TH">storage device or data server?</cref></t>
      <t>
        For example, the metadata server
-       would issue a NFSv3 GETATTR to the storage device. This query
+       would issue a NFSv3 GETATTR to the data server. This query
        is most likely triggered in response to a NFSv4 GETATTR issued by a client to the
-       metadata server. Not only are these NFSv3 GETATTRs to the storage device
-       individually expensive, the storage device can become inundated by
+       metadata server. Not only are these NFSv3 GETATTRs to the data server
+       individually expensive, the data server can become inundated by
        a storm of such requests. NFSv3 solved a similar issue by having
        the READ and WRITE operations employ a post-operation attribute
        to report the weak cache consistency (WCC) data (See Section 2.6
@@ -187,7 +219,7 @@
        Whilst NFSv4 got rid of the requirement for WCC information to
        be supplied by the WRITE or READ operations, the introduction
        of pNFS re-introduces the same problem. The metadata server
-       has to communicate with the storage devices in order to get
+       has to communicate with the data server in order to get
        at the data which could be provided by a WCC model.
      </t>
      <t>
@@ -204,12 +236,12 @@
      <t>
        In this document, we present a new NFSv4.2 operation called
        LAYOUT_WCC, which allows the client to update the metadata
-       server with information from the storage devices. The client
+       server with information from the data server. The client
        is responsible for taking the NFSv3 WCC information (which
        is returned by the 3 operations it is allowed to use) and
        pass that back to the metadata server in the NFSv4.2 attributes.
        The metadata server <bcp14>MAY</bcp14> then avoid costly
-       NFSv3 GETATTR calls to the storage devices. As this is a weak
+       NFSv3 GETATTR calls to the data servers. As this is a weak
        model, the metatdate server <bcp14>MAY</bcp14> make such
        calls anyway in order to strengthen the model.
      </t>
@@ -262,7 +294,7 @@
        to those in a fattr4.  Just as the post-operation attributes may be
        ignored by the client, the server may ignore the attributes inside
        the LAYOUT_WCC.  But the server can also use those attributes to
-       avoid querying the storage device for the data file attributes.
+       avoid querying the data server for the data file attributes.
        Note that as these attributes are optional and there is nothing
        the client can do if the server ignores one, there is no need to
        return a bitmap4 of which attributes were accepted in the result
@@ -289,8 +321,14 @@
        </t>
        <ul spacing="normal">
          <li>
-           Whenever it sends a GETATTR for any of the following attributes: size, space_used, change, 
-           time_access, time_metadata, and time_modify.
+           Whenever it sends a GETATTR for any of the following attributes: size (see Section 5.8.1.5
+           of <xref target="RFC8881" format="default" sectionFormat="of"/>), space_used (see Section 5.8.2.25
+           of <xref target="RFC8881" format="default" sectionFormat="of"/>), change (see Section 5.8.1.4
+           of <xref target="RFC8881" format="default" sectionFormat="of"/>), 
+           time_access (see Section 5.8.2.37
+           of <xref target="RFC8881" format="default" sectionFormat="of"/>), time_metadata (see Section 5.8.2.42
+           of <xref target="RFC8881" format="default" sectionFormat="of"/>), and time_modify (see Section 5.8.2.43
+           of <xref target="RFC8881" format="default" sectionFormat="of"/>).
          </li>
          <li>
            Whenever it sends an NFS4ERR_ACCESS error via LAYOUTRETURN or LAYOUTERROR - it could
@@ -298,7 +336,7 @@
            READ, or COMMIT operation which got the error.
          </li>
          <li>
-           Whenever it sends a SETATTR to refresh the proxied times ((See Section 4 of <xref
+           Whenever it sends a SETATTR to refresh the proxied times (See Section 4 of <xref
            target="delstid" format="default" sectionFormat="of"/>) - the metadata server is
            going to want to correlate these times in order to detect later modification to
            the data file.
@@ -345,6 +383,12 @@
       When an error is encountered, the metadata server can decide to ignore
       the entire operation or depending on the layout type
       specific payload, it could decide to apply a portion of the payload.
+      Note that there are no new errors introduced for the LAYOUT_WCC
+      operation and the errors in <xref target="tbl_op_error_returns" format="default" sectionFormat="of"/>
+      are each defined in Section 15.1 of <xref target="RFC8881"
+      format="default" sectionFormat="of"/>. <xref target="tbl_op_error_returns" format="default" sectionFormat="of"/>
+      can be considered as an extension of Section 15.2 of <xref target="RFC8881"
+      format="default" sectionFormat="of"/>.
      </t>
      <t keepWithNext="true">Valid Error Returns for LAYOUT_WCC</t>
      <table anchor="tbl_op_error_returns" align="center">
@@ -523,7 +567,7 @@ sh extract.sh < spec.txt > layout_wcc.x
   </t>
 </section>
 
-<section anchor="sec_iana" numbered="true" removeInRFC="false" toc="default">
+<section anchor="sec_iana" numbered="true" removeInRFC="true" toc="default">
   <name>IANA Considerations</name>
   <t>
     IANA should use the current document (RFC-TBD) as the reference for the new entries.
