@@ -333,7 +333,8 @@
          <li>
            Whenever it sends an NFS4ERR_ACCESS error via LAYOUTRETURN or LAYOUTERROR - it could
            have already gotten the NFSv3 uid and gid values back in the WCC of the WRITE,
-           READ, or COMMIT operation which got the error.
+           READ, or COMMIT operation which got the error. Thus it could report that information
+           back to the metadata server, saving it from querying that information via a NFSv3 GETATTR.
          </li>
          <li>
            Whenever it sends a SETATTR to refresh the proxied times (See Section 4 of <xref
