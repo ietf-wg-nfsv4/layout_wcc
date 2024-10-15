@@ -1,40 +1,40 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE rfc>
-<?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt'?>
 
 <rfc
- category="std"
- docName="draft-ietf-nfsv4-layoutwcc-VERSIONVAR"
- ipr="trust200902"
- obsoletes=""
- scripts="Common,Latin"
- sortRefs="true"
- submissionType="IETF"
- symRefs="true"
- tocDepth="3"
- tocInclude="true"
- version="3"
- consensus="true"
- xml:lang="en">
+ category='std'
+ docName='draft-ietf-nfsv4-layoutwcc-VERSIONVAR'
+ ipr='trust200902'
+ obsoletes=''
+ scripts='Common,Latin'
+ sortRefs='true'
+ submissionType='IETF'
+ symRefs='true'
+ tocDepth='3'
+ tocInclude='true'
+ version='3'
+ consensus='true'
+ xml:lang='en'>
 
 <front>
-  <title abbrev="LAYOUT_WCC">
+  <title abbrev='LAYOUT_WCC'>
     Add LAYOUT_WCC to NFSv4.2's Flex File Layout Type
   </title>
-  <seriesInfo name="Internet-Draft" value="draft-ietf-nfsv4-layoutwcc-VERSIONVAR"/>
-  <author fullname="Thomas Haynes" initials="T." surname="Haynes">
-    <organization abbrev="Hammerspace">Hammerspace</organization>
+  <seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-layoutwcc-VERSIONVAR'/>
+  <author fullname='Thomas Haynes' initials='T.' surname='Haynes'>
+    <organization abbrev='Hammerspace'>Hammerspace</organization>
     <address>
       <email>loghyr@gmail.com</email>
     </address>
   </author>
-  <author fullname="Trond Myklebust" initials="T." surname="Myklebust">
-    <organization abbrev="Hammerspace">Hammerspace</organization>
+  <author fullname='Trond Myklebust' initials='T.' surname='Myklebust'>
+    <organization abbrev='Hammerspace'>Hammerspace</organization>
     <address>
       <email>trondmy@hammerspace.com</email>
     </address>
   </author>
-  <date year="YEARVAR" month="MONTHVAR" day="DAYVAR"/>
+  <date year='YEARVAR' month='MONTHVAR' day='DAYVAR'/>
   <area>Transport</area>
   <workgroup>Network File System Version 4</workgroup>
   <keyword>NFSv4</keyword>
@@ -51,26 +51,26 @@
     </t>
   </abstract>
 
-  <note removeInRFC="true">
+  <note removeInRFC='true'>
     <t>
       Discussion of this draft takes place
       on the NFSv4 working group mailing list (nfsv4@ietf.org),
       which is archived at
-      <eref target="https://mailarchive.ietf.org/arch/browse/nfsv4/"/>.
+      <eref target='https://mailarchive.ietf.org/arch/browse/nfsv4/'/>.
       Working Group information can be found at
-      <eref target="https://datatracker.ietf.org/wg/nfsv4/about/"/>.
+      <eref target='https://datatracker.ietf.org/wg/nfsv4/about/'/>.
     </t>
   </note>
 </front>
 
 <middle>
 
-<section anchor="sec_intro" numbered="true" removeInRFC="false" toc="default">
+<section anchor='sec_intro' numbered='true' removeInRFC='false' toc='default'>
   <name>Introduction</name>
   <t>
     In the Network File System version 4 (NFSv4) with a Parallel NFS
-    (pNFS) Flexible File Layout (see Section 12 of <xref target="RFC8435" format="default"
-    sectionFormat="of"/>) server, there is no mechanism for the data
+    (pNFS) Flexible File Layout (see Section 12 of <xref target='RFC8435' format='default'
+    sectionFormat='of'/>) server, there is no mechanism for the data
     servers to update the metadata servers for when the data portion
     of the file is modified.  The metadata server needs this knowledge
     to correspondingly update the metadata portion of the file. If the
@@ -82,18 +82,18 @@
   </t>
 
   <t>
-    Using the process detailed in <xref target="RFC8178" format="default"
-    sectionFormat="of"/>, the revisions in this document become an
-    extension of NFSv4.2 <xref target="RFC7862" format="default"
-    sectionFormat="of"/>. They are built on top of the external data
-    representation (XDR) <xref target="RFC4506" format="default"
-    sectionFormat="of"/> generated from <xref target="RFC7863"
-    format="default" sectionFormat="of"/>.
+    Using the process detailed in <xref target='RFC8178' format='default'
+    sectionFormat='of'/>, the revisions in this document become an
+    extension of NFSv4.2 <xref target='RFC7862' format='default'
+    sectionFormat='of'/>. They are built on top of the external data
+    representation (XDR) <xref target='RFC4506' format='default'
+    sectionFormat='of'/> generated from <xref target='RFC7863'
+    format='default' sectionFormat='of'/>.
   </t>
 
-  <section anchor="sec_defs" numbered="true" removeInRFC="false" toc="default">
+  <section anchor='sec_defs' numbered='true' removeInRFC='false' toc='default'>
     <name>Definitions</name>
-    <dl newline="false" spacing="normal">
+    <dl newline='false' spacing='normal'>
       <dt>(file) data:</dt>
       <dd>
         that part of the file system object that contains the
@@ -126,7 +126,7 @@
         the target to which clients may direct I/O requests
         when they hold an appropriate layout.  Note that each data server
         is a storage device but that some storage device are not data
-        servers. (See Section 2.1 of <xref target="RFC8434" format="default" sectionFormat="of"/>
+        servers. (See Section 2.1 of <xref target='RFC8434' format='default' sectionFormat='of'/>
         for a discussion on the difference between a data server
         and a storage device.)
       </dd>
@@ -134,62 +134,62 @@
       <dt>weak cache consistency (WCC):</dt>
       <dd>
         In NFSv3, WCC allows the client to check for file attribute changes
-        before and after an operation.  (See Section 2.6 of <xref target="RFC1813"
-        format="default" sectionFormat="of"/>)
+        before and after an operation.  (See Section 2.6 of <xref target='RFC1813'
+        format='default' sectionFormat='of'/>)
       </dd>
     </dl>
   </section>
-  <section numbered="true" removeInRFC="false" toc="default">
+  <section numbered='true' removeInRFC='false' toc='default'>
     <name>Requirements Language</name>
     <t>
-      The key words "<bcp14>MUST</bcp14>", "<bcp14>MUST NOT</bcp14>",
-      "<bcp14>REQUIRED</bcp14>", "<bcp14>SHALL</bcp14>", "<bcp14>SHALL
-      NOT</bcp14>", "<bcp14>SHOULD</bcp14>", "<bcp14>SHOULD NOT</bcp14>",
-      "<bcp14>RECOMMENDED</bcp14>", "<bcp14>NOT RECOMMENDED</bcp14>",
-      "<bcp14>MAY</bcp14>", and "<bcp14>OPTIONAL</bcp14>" in this
+      The key words '<bcp14>MUST</bcp14>', '<bcp14>MUST NOT</bcp14>',
+      '<bcp14>REQUIRED</bcp14>', '<bcp14>SHALL</bcp14>', '<bcp14>SHALL
+      NOT</bcp14>', '<bcp14>SHOULD</bcp14>', '<bcp14>SHOULD NOT</bcp14>',
+      '<bcp14>RECOMMENDED</bcp14>', '<bcp14>NOT RECOMMENDED</bcp14>',
+      '<bcp14>MAY</bcp14>', and '<bcp14>OPTIONAL</bcp14>' in this
       document are to be interpreted as described in BCP 14 <xref
-      target="RFC2119" format="default" sectionFormat="of"/> <xref
-      target="RFC8174" format="default" sectionFormat="of"/> when,
+      target='RFC2119' format='default' sectionFormat='of'/> <xref
+      target='RFC8174' format='default' sectionFormat='of'/> when,
       and only when, they appear in all capitals, as shown here.
     </t>
   </section>
 </section>
 
-<section anchor="wcc" numbered="true" removeInRFC="false" toc="default">
+<section anchor='wcc' numbered='true' removeInRFC='false' toc='default'>
   <name>Weak Cache Consistency (WCC)</name>
      <t>
        A layout type for pNFS enables the metadata server to tell the
        client both the storage protocol and location of data to be used
        to communicate with the storage devices.
-       The Flex Files Layout Type (in <xref target="RFC8435" format="default"
-       sectionFormat="of"/>) details how NFSv3 data servers can be accessed.
-       The client is only allowed to perform NFSv3 READ (see Section 3.3.6 of <xref target="RFC1813"
-       format="default" sectionFormat="of"/>), WRITE (see Section 3.3.6 of <xref target="RFC1813"
-       format="default" sectionFormat="of"/>), and COMMIT (see Section 3.3.21 of <xref target="RFC1813"
-        format="default" sectionFormat="of"/>)
+       The Flex Files Layout Type (in <xref target='RFC8435' format='default'
+       sectionFormat='of'/>) details how NFSv3 data servers can be accessed.
+       The client is only allowed to perform NFSv3 READ (see Section 3.3.6 of <xref target='RFC1813'
+       format='default' sectionFormat='of'/>), WRITE (see Section 3.3.6 of <xref target='RFC1813'
+       format='default' sectionFormat='of'/>), and COMMIT (see Section 3.3.21 of <xref target='RFC1813'
+        format='default' sectionFormat='of'/>)
        operations on the file handles provided in the layout. I.e., the client
        is only allowed to use NFSv3 operations which directly act on the data portion of the
        data file.
      </t>
      <t>
        Because
-       there is no contol protocol (see <xref target="RFC8434" format="default" sectionFormat="of"/>)
+       there is no contol protocol (see <xref target='RFC8434' format='default' sectionFormat='of'/>)
        possible with all data servers, NFSv3 is used as the control protocol.
-       As such, the NFSv3 CREATE (see Section 3.3.8 of <xref target="RFC1813"
-       format="default" sectionFormat="of"/>), GETATTR (see Section 3.3.1 of <xref target="RFC1813"
-       format="default" sectionFormat="of"/>), and SETATTR (see Section 3.3.2 of <xref target="RFC1813"
-       format="default" sectionFormat="of"/>) are operations commonly
+       As such, the NFSv3 CREATE (see Section 3.3.8 of <xref target='RFC1813'
+       format='default' sectionFormat='of'/>), GETATTR (see Section 3.3.1 of <xref target='RFC1813'
+       format='default' sectionFormat='of'/>), and SETATTR (see Section 3.3.2 of <xref target='RFC1813'
+       format='default' sectionFormat='of'/>) are operations commonly
        used by the metadata server. I.e., the metadata server is only allowed to use
        NFSv3 operations which directly act on the metadata portion of the data file.
        GETATTR allows the metadata server to mainly retrieve the mtime (modify time),
        ctime (change time), and atime (access time). The metadata server
        can use this information to determine if the client modified the
        file whilst it held an iomode of LAYOUTIOMODE4_RW (see Section 3.3.20
-       of <xref target="RFC8881" format="default" sectionFormat="of"/>). Then
+       of <xref target='RFC8881' format='default' sectionFormat='of'/>). Then
        it can determine the time_modify (see Section 5.8.2.43
-       of <xref target="RFC8881" format="default" sectionFormat="of"/>), time_metadata (see Section 5.8.2.42
-       of <xref target="RFC8881" format="default" sectionFormat="of"/>), and time_access (see Section 5.8.2.37
-       of <xref target="RFC8881" format="default" sectionFormat="of"/>) for
+       of <xref target='RFC8881' format='default' sectionFormat='of'/>), time_metadata (see Section 5.8.2.42
+       of <xref target='RFC8881' format='default' sectionFormat='of'/>), and time_access (see Section 5.8.2.37
+       of <xref target='RFC8881' format='default' sectionFormat='of'/>) for
        the metadata file. I.e., the information to return to clients
        in a NFSv4.2 GETATTR response.
      </t>
@@ -202,7 +202,7 @@
        a storm of such requests. NFSv3 solved a similar issue by having
        the READ and WRITE operations employ a post-operation attribute
        to report the weak cache consistency (WCC) data (See Section 2.6
-       of <xref target="RFC1813" format="default" sectionFormat="of"/>).
+       of <xref target='RFC1813' format='default' sectionFormat='of'/>).
      </t>
      <t>
        Each NFSv3 operation corresponds to one round trip between the
@@ -226,10 +226,10 @@
      <t>
        With the flexible files layout type, the client can leverage
        the NFSv3 WCC to service the proxying of times (See Section 4 of <xref
-       target="delstid" format="default" sectionFormat="of"/>).
+       target='delstid' format='default' sectionFormat='of'/>).
        But the granularity of this data is limited. With client side
-       mirroring (See Section 8 of <xref target="RFC8435" format="default"
-       sectionFormat="of"/>), the client has to aggregate the N mirrored
+       mirroring (See Section 8 of <xref target='RFC8435' format='default'
+       sectionFormat='of'/>), the client has to aggregate the N mirrored
        files in order to send one piece of information instead of N
        pieces of information. Also, the client is limited to sending
        that information only when it returns the delegation.
@@ -246,15 +246,15 @@
        model, the metatdate server <bcp14>MAY</bcp14> make such
        calls anyway in order to strengthen the model.
      </t>
-     <t><cref anchor="AI2" source="TH">Can it go into LAYOUTRETURN?</cref></t>
+     <t><cref anchor='AI2' source='TH'>Can it go into LAYOUTRETURN?</cref></t>
 
 </section>
 
-<section anchor="op_LAYOUT_WCC" numbered="true" removeInRFC="false" toc="default">
+<section anchor='op_LAYOUT_WCC' numbered='true' removeInRFC='false' toc='default'>
   <name>Operation 77: LAYOUT_WCC - Layout Weak Cache Consistency</name>
-  <section toc="exclude" anchor="ss_op_LAYOUT_WCC_A" numbered="true">
+  <section toc='exclude' anchor='ss_op_LAYOUT_WCC_A' numbered='true'>
     <name>ARGUMENT</name>
-    <sourcecode name="" type="" markers="true"><![CDATA[
+    <sourcecode name='' type='' markers='true'><![CDATA[
 /// struct LAYOUT_WCC4args {
 ///         stateid4        lowa_stateid;
 ///         layouttype4     lowa_type;
@@ -262,32 +262,32 @@
 /// };
 ]]></sourcecode>
    <t>
-     stateid4 is defined in Section 3.3.12 of <xref target="RFC8881"
-       format="default" sectionFormat="of"/>.
-     layouttype4 is defined in Section 3.3.13 of <xref target="RFC8881"
-       format="default" sectionFormat="of"/>.
+     stateid4 is defined in Section 3.3.12 of <xref target='RFC8881'
+       format='default' sectionFormat='of'/>.
+     layouttype4 is defined in Section 3.3.13 of <xref target='RFC8881'
+       format='default' sectionFormat='of'/>.
    </t>
    </section>
-   <section toc="exclude" anchor="ss_op_LAYOUT_WCC_R" numbered="true">
+   <section toc='exclude' anchor='ss_op_LAYOUT_WCC_R' numbered='true'>
      <name>RESULT</name>
-     <sourcecode name="" type="" markers="true"><![CDATA[
+     <sourcecode name='' type='' markers='true'><![CDATA[
 /// struct LAYOUT_WCC4res {
 ///         nfsstat4                lowr_status;
 /// };
 ]]></sourcecode>
    <t>
-     nfsstat4 is defined in Section 3.2 of <xref target="RFC8881"
-       format="default" sectionFormat="of"/>.
+     nfsstat4 is defined in Section 3.2 of <xref target='RFC8881'
+       format='default' sectionFormat='of'/>.
    </t>
    </section>
-   <section toc="exclude" anchor="ss_op_LAYOUT_WCC_D" numbered="true">
+   <section toc='exclude' anchor='ss_op_LAYOUT_WCC_D' numbered='true'>
      <name>DESCRIPTION</name>
      <t>
        The current filehandle and the lowa_stateid identifies the
        particular layout for the LAYOUT_WCC operation. The lowa_type
        indicates how to unpack the layout type specific payload inside
        the lowa_body field. The lowa_type is defined to be a value from
-       the IANA registry for "pNFS Layout Types Registry".
+       the IANA registry for 'pNFS Layout Types Registry'.
      </t>
      <t>
        The lowa_body will contain the data file attributes. The client
@@ -303,9 +303,9 @@
      </t>
    </section>
 
-   <section anchor="ss_op_LAYOUT_WCC_impl" numbered="true" removeInRFC="false" toc="default">
+   <section anchor='ss_op_LAYOUT_WCC_impl' numbered='true' removeInRFC='false' toc='default'>
      <name>Implementation</name>
-     <section anchor="ss_op_LAYOUT_WCC_examples" numbered="true" removeInRFC="false" toc="default">
+     <section anchor='ss_op_LAYOUT_WCC_examples' numbered='true' removeInRFC='false' toc='default'>
        <name>Examples of when to use LAYOUT_WCC</name>
        <t>
          The only way for the metadata server to detect modifications
@@ -320,16 +320,16 @@
          operation in order to avoid having the metadata server issue
          NFSv3 GETATTR requests to the data servers:
        </t>
-       <ul spacing="normal">
+       <ul spacing='normal'>
          <li>
            Whenever it sends a GETATTR for any of the following attributes: size (see Section 5.8.1.5
-           of <xref target="RFC8881" format="default" sectionFormat="of"/>), space_used (see Section 5.8.2.25
-           of <xref target="RFC8881" format="default" sectionFormat="of"/>), change (see Section 5.8.1.4
-           of <xref target="RFC8881" format="default" sectionFormat="of"/>), 
+           of <xref target='RFC8881' format='default' sectionFormat='of'/>), space_used (see Section 5.8.2.25
+           of <xref target='RFC8881' format='default' sectionFormat='of'/>), change (see Section 5.8.1.4
+           of <xref target='RFC8881' format='default' sectionFormat='of'/>), 
            time_access (see Section 5.8.2.37
-           of <xref target="RFC8881" format="default" sectionFormat="of"/>), time_metadata (see Section 5.8.2.42
-           of <xref target="RFC8881" format="default" sectionFormat="of"/>), and time_modify (see Section 5.8.2.43
-           of <xref target="RFC8881" format="default" sectionFormat="of"/>).
+           of <xref target='RFC8881' format='default' sectionFormat='of'/>), time_metadata (see Section 5.8.2.42
+           of <xref target='RFC8881' format='default' sectionFormat='of'/>), and time_modify (see Section 5.8.2.43
+           of <xref target='RFC8881' format='default' sectionFormat='of'/>).
          </li>
          <li>
            Whenever it sends an NFS4ERR_ACCESS error via LAYOUTRETURN or LAYOUTERROR - it could
@@ -339,19 +339,19 @@
          </li>
          <li>
            Whenever it sends a SETATTR to refresh the proxied times (See Section 4 of <xref
-           target="delstid" format="default" sectionFormat="of"/>) - the metadata server is
+           target='delstid' format='default' sectionFormat='of'/>) - the metadata server is
            going to want to correlate these times in order to detect later modification to
            the data file.
          </li>
        </ul>
      </section>
 
-     <section anchor="ss_op_LAYOUT_WCC_payload" numbered="true" removeInRFC="false" toc="default">
+     <section anchor='ss_op_LAYOUT_WCC_payload' numbered='true' removeInRFC='false' toc='default'>
        <name>Examples of what to send in the LAYOUT_WCC</name>
        <t>
          The NFSv3 attributes returned in the WCC of WRITE, READ, and COMMIT are a smaller subset
          of what can be transmitted as a NFSv4 attribute. The mapping of NFSv3 to NFSv4 attributes
-         shown in <xref target="table_mappings"/> also details which attributes
+         shown in <xref target='table_mappings'/> also details which attributes
          the LAYOUT_WCC <bcp14>SHOULD</bcp14> be providing to the metadata server, Both the uid
          and gid are stringified into their respective attributes of owner and owner_group.
          The reason to provide these two attributes is in case of NFS4ERR_ACCESS, the metadata
@@ -377,31 +377,31 @@
      </section>
    </section>
 
-   <section anchor="ss_op_LAYOUT_WCC_errs" numbered="true" removeInRFC="false" toc="default">
+   <section anchor='ss_op_LAYOUT_WCC_errs' numbered='true' removeInRFC='false' toc='default'>
      <name>Allowed Errors</name>
      <t>
       The LAYOUT_WCC operation can raise the errors in
-      <xref target="tbl_op_error_returns" format="default" sectionFormat="of"/>.
+      <xref target='tbl_op_error_returns' format='default' sectionFormat='of'/>.
       When an error is encountered, the metadata server can decide to ignore
       the entire operation or depending on the layout type
       specific payload, it could decide to apply a portion of the payload.
       Note that there are no new errors introduced for the LAYOUT_WCC
-      operation and the errors in <xref target="tbl_op_error_returns" format="default" sectionFormat="of"/>
-      are each defined in Section 15.1 of <xref target="RFC8881"
-      format="default" sectionFormat="of"/>. <xref target="tbl_op_error_returns" format="default" sectionFormat="of"/>
-      can be considered as an extension of Section 15.2 of <xref target="RFC8881"
-      format="default" sectionFormat="of"/>.
+      operation and the errors in <xref target='tbl_op_error_returns' format='default' sectionFormat='of'/>
+      are each defined in Section 15.1 of <xref target='RFC8881'
+      format='default' sectionFormat='of'/>. <xref target='tbl_op_error_returns' format='default' sectionFormat='of'/>
+      can be considered as an extension of Section 15.2 of <xref target='RFC8881'
+      format='default' sectionFormat='of'/>.
      </t>
-     <t keepWithNext="true">Valid Error Returns for LAYOUT_WCC</t>
-     <table anchor="tbl_op_error_returns" align="center">
+     <t keepWithNext='true'>Valid Error Returns for LAYOUT_WCC</t>
+     <table anchor='tbl_op_error_returns' align='center'>
        <thead>
          <tr>
-           <th align="left">Errors</th>
+           <th align='left'>Errors</th>
          </tr>
        </thead>
        <tbody>
          <tr>
-           <td align="left">
+           <td align='left'>
         NFS4ERR_ADMIN_REVOKED,
         NFS4ERR_BADXDR,
         NFS4ERR_BAD_STATEID,
@@ -434,18 +434,18 @@
       </tbody>
     </table>
   </section>
-  <section anchor="ss_op_LAYOUT_WCC_opt" numbered="true" removeInRFC="false" toc="default">
+  <section anchor='ss_op_LAYOUT_WCC_opt' numbered='true' removeInRFC='false' toc='default'>
     <name>Extension of Existing Implementations</name>
     <t>
       The new LAYOUT_WCC operation is <bcp14>OPTIONAL</bcp14> for both
-      NFSv4.2 (<xref target="RFC7863" format="default" sectionFormat="of"/>)
-      and the flexible files layout type (<xref target="RFC8435" format="default"
-       sectionFormat="of"/>).
+      NFSv4.2 (<xref target='RFC7863' format='default' sectionFormat='of'/>)
+      and the flexible files layout type (<xref target='RFC8435' format='default'
+       sectionFormat='of'/>).
     </t>
   </section>
-  <section anchor="ss_op_LAYOUT_WCC_ff" numbered="true" removeInRFC="false" toc="default">
+  <section anchor='ss_op_LAYOUT_WCC_ff' numbered='true' removeInRFC='false' toc='default'>
     <name>Flex Files Layout Type</name>
-    <sourcecode name="" type="" markers="true"><![CDATA[
+    <sourcecode name='' type='' markers='true'><![CDATA[
 /// struct ff_data_server_wcc4 {
 ///             deviceid4            ffdsw_deviceid;
 ///             stateid4             ffdsw_stateid;
@@ -465,10 +465,10 @@
     <t>
       The flex file layout type specific results <bcp14>MUST</bcp14> correspond
       to the ff_layout4 data structure as defined in Section 5.1 of
-      <xref target="RFC8435" format="default" sectionFormat="of"/>.
+      <xref target='RFC8435' format='default' sectionFormat='of'/>.
       There <bcp14>MUST</bcp14> be a one-to-one correspondence between:
     </t>
-    <ul spacing="normal">
+    <ul spacing='normal'>
       <li>
         ff_data_server4 -&gt; ff_data_server_wcc4
       </li>
@@ -502,16 +502,16 @@
     </t>
     <t>
       The ffdsw_attributes are processed similar to the obj_attributes in
-      the SETATTR arguments (See Section 18.34 of <xref target="RFC8881" format="default" sectionFormat="of"/>).
+      the SETATTR arguments (See Section 18.34 of <xref target='RFC8881' format='default' sectionFormat='of'/>).
     </t>
   </section>
 </section>
 
-<section anchor="xdr_desc" numbered="true" removeInRFC="false" toc="default">
+<section anchor='xdr_desc' numbered='true' removeInRFC='false' toc='default'>
   <name>Extraction of XDR</name>
   <t>
     This document contains the external data representation (XDR)
-    <xref target="RFC4506" format="default" sectionFormat="of"/> description of the new open
+    <xref target='RFC4506' format='default' sectionFormat='of'/> description of the new open
     flags for delegating the file to the client.
     The XDR description is embedded in this
     document in a way that makes it simple for the reader to extract
@@ -519,57 +519,57 @@
     into the following shell script to produce the machine readable
     XDR description of the new flags:
   </t>
-  <sourcecode name="" type="" markers="true"><![CDATA[
+  <sourcecode name='' type='' markers='true'><![CDATA[
 #!/bin/sh
 grep '^ *///' $* | sed 's?^ */// ??' | sed 's?^ *///$??'
     ]]>
   </sourcecode>
   <t>
-    That is, if the above script is stored in a file called "extract.sh", and
-    this document is in a file called "spec.txt", then the reader can do:
+    That is, if the above script is stored in a file called 'extract.sh', and
+    this document is in a file called 'spec.txt', then the reader can do:
   </t>
-  <sourcecode name="" type="" markers="true"><![CDATA[
+  <sourcecode name='' type='' markers='true'><![CDATA[
 sh extract.sh < spec.txt > layout_wcc.x
     ]]>
   </sourcecode>
   <t>
     The effect of the script is to remove leading white space from each
-    line, plus a sentinel sequence of "///".  XDR descriptions with the
+    line, plus a sentinel sequence of '///'.  XDR descriptions with the
     sentinel sequence are embedded throughout the document.
   </t>
   <t>
     Note that the XDR code contained in this document depends on types
-    from the NFSv4.2 nfs4_prot.x file (generated from <xref target="RFC7863" format="default" sectionFormat="of"/>).
+    from the NFSv4.2 nfs4_prot.x file (generated from <xref target='RFC7863' format='default' sectionFormat='of'/>).
     This includes both nfs types that end with a 4, such as offset4,
     length4, etc., as well as more generic types such as uint32_t and
     uint64_t.
   </t>
   <t>
-    While the XDR can be appended to that from <xref target="RFC7863" format="default" sectionFormat="of"/>,
+    While the XDR can be appended to that from <xref target='RFC7863' format='default' sectionFormat='of'/>,
     the various code snippets belong in their respective areas of the
     that XDR.
   </t>
-  <section anchor="code_copyright" numbered="true" removeInRFC="false" toc="default">
+  <section anchor='code_copyright' numbered='true' removeInRFC='false' toc='default'>
     <name>Code Components Licensing Notice</name>
     <t>
        Both the XDR description and the scripts used for extracting the
        XDR description are Code Components as described in Section 4 of
-       <xref target="LEGAL" format="default" sectionFormat="of">"Legal
-       Provisions Relating to IETF Documents"</xref>.  These Code
+       <xref target='LEGAL' format='default' sectionFormat='of'>'Legal
+       Provisions Relating to IETF Documents'</xref>.  These Code
        Components are licensed according to the terms of that document.
     </t>
   </section>
 </section>
 
-<section anchor="sec_security" numbered="true" removeInRFC="false" toc="default">
+<section anchor='sec_security' numbered='true' removeInRFC='false' toc='default'>
   <name>Security Considerations</name>
   <t>
     There are no new security considerations beyond those in
-    <xref target="RFC7862" format="default" sectionFormat="of"/>.
+    <xref target='RFC7862' format='default' sectionFormat='of'/>.
   </t>
 </section>
 
-<section anchor="sec_iana" numbered="true" removeInRFC="true" toc="default">
+<section anchor='sec_iana' numbered='true' removeInRFC='true' toc='default'>
   <name>IANA Considerations</name>
   <t>
     There are no IANA considerations for this document.
@@ -585,58 +585,58 @@ sh extract.sh < spec.txt > layout_wcc.x
 
   <references>
   <name>Normative References</name>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-       href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-       href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4506.xml"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-       href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7862.xml"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-       href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7863.xml"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-       href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-       href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8178.xml"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-       href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8434.xml"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-       href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8435.xml"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-       href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8881.xml"/>
+    <xi:include xmlns:xi='http://www.w3.org/2001/XInclude'
+       href='https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml'/>
+    <xi:include xmlns:xi='http://www.w3.org/2001/XInclude'
+       href='https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4506.xml'/>
+    <xi:include xmlns:xi='http://www.w3.org/2001/XInclude'
+       href='https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7862.xml'/>
+    <xi:include xmlns:xi='http://www.w3.org/2001/XInclude'
+       href='https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7863.xml'/>
+    <xi:include xmlns:xi='http://www.w3.org/2001/XInclude'
+       href='https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml'/>
+    <xi:include xmlns:xi='http://www.w3.org/2001/XInclude'
+       href='https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8178.xml'/>
+    <xi:include xmlns:xi='http://www.w3.org/2001/XInclude'
+       href='https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8434.xml'/>
+    <xi:include xmlns:xi='http://www.w3.org/2001/XInclude'
+       href='https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8435.xml'/>
+    <xi:include xmlns:xi='http://www.w3.org/2001/XInclude'
+       href='https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8881.xml'/>
 
     <reference anchor='delstid'>
       <front>
         <title>Extending the Opening of Files in NFSv4.2</title>
-        <author initials="T." surname="Haynes" fullname="T. Haynes">
+        <author initials='T.' surname='Haynes' fullname='T. Haynes'>
           <organization>Hammerspace</organization>
         </author>
-        <author initials="T." surname="Myklebust" fullname="T. Myklebust">
+        <author initials='T.' surname='Myklebust' fullname='T. Myklebust'>
           <organization>Hammerspace</organization>
         </author>
-        <date year="2023" month="February" />
+        <date year='2023' month='February' />
       </front>
-      <seriesInfo name="draft-ietf-nfsv4-delstid-02.xml" value="(Work In Progress)"/>
+      <seriesInfo name='draft-ietf-nfsv4-delstid-02.xml' value='(Work In Progress)'/>
     </reference>
 
   </references>
 
   <references>
   <name>Informative References</name>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-       href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1813.xml"/>
-    <reference anchor="LEGAL" target="http://trustee.ietf.org/docs/IETF-Trust-License-Policy.pdf">
+    <xi:include xmlns:xi='http://www.w3.org/2001/XInclude'
+       href='https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1813.xml'/>
+    <reference anchor='LEGAL' target='http://trustee.ietf.org/docs/IETF-Trust-License-Policy.pdf'>
       <front>
-        <title abbrev="Legal Provisions">Legal Provisions Relating to IETF Documents</title>
+        <title abbrev='Legal Provisions'>Legal Provisions Relating to IETF Documents</title>
         <author>
           <organization>IETF Trust</organization>
         </author>
-        <date month="November" year="2008"/>
+        <date month='November' year='2008'/>
       </front>
     </reference>
   </references>
 </references>
 
-<section numbered="true" removeInRFC="false" toc="default">
+<section numbered='true' removeInRFC='false' toc='default'>
       <name>Acknowledgments</name>
       <t>
         Dave Noveck, Tigran Mkrtchyan, and Rick Macklem provided reviews of the document.
