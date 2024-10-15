@@ -4,7 +4,7 @@
 YEAR=`date +%Y`
 MONTH=`date +%B`
 DAY=`date +%d`
-VERS=04
+VERS=05
 
 BASEDOC=draft-ietf-nfsv4-layoutwcc
 
