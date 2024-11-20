@@ -93,6 +93,10 @@
 
   <section anchor='sec_defs' numbered='true' removeInRFC='false' toc='default'>
     <name>Definitions</name>
+    <t>
+      See Section 1.1 of <xref target='RFC8435' format='default'
+      sectionFormat='of'/> for a fuller set of definitions.
+    </t>
     <dl newline='false' spacing='normal'>
       <dt>(file) data:</dt>
       <dd>
@@ -134,8 +138,8 @@
       <dt>weak cache consistency (WCC):</dt>
       <dd>
         In NFSv3, WCC allows the client to check for file attribute changes
-        before and after an operation.  (See Section 2.6 of <xref target='RFC1813'
-        format='default' sectionFormat='of'/>)
+        before and after an operation (See Section 2.6 of <xref target='RFC1813'
+        format='default' sectionFormat='of'/>).
       </dd>
     </dl>
   </section>
