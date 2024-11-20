@@ -246,7 +246,6 @@
        model, the metatdata server <bcp14>MAY</bcp14> make such
        calls anyway in order to strengthen the model.
      </t>
-     <t><cref anchor='AI2' source='TH'>Can it go into LAYOUTRETURN?</cref></t>
 
 </section>
 
