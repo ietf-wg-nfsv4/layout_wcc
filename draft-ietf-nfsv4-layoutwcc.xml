@@ -312,7 +312,7 @@
          can compare the mtime results across multiple calls to detect a
          NFSv3 WRITE operation by the client. Likewise, the atime results
          indicate the client having issued a NFSv3 READ operation. As such,
-         the client should leverage the LAYOUT_WCC operation whenever it
+         the client can leverage the LAYOUT_WCC operation whenever it
          has the belief that the metadata server would need to refresh
          the attributes of the data files.  While the client can send a
          LAYOUT_WCC at any time, there are times it will want to do this
