@@ -43,7 +43,7 @@
       The Parallel Network File System (pNFS) Flexible File Layout allows
       for a file's metadata (MDS) and data (DS) to be on different
       servers. It does not provide a mechanism for the data server to
-      update the metadata server of changes to the data part of the
+      update the metadata server to changes to the data part of the
       file. The client has knowledge of such updates, but lacks the
       ability to update the metadata server.  This document presents a
       refinement to RFC8435 to allow the client to update the metadata
@@ -228,7 +228,7 @@
        at the data which could be provided by a WCC model.
      </t>
      <t>
-       With the flexible files layout type, the client can leverage
+       With the flexible file layout type, the client can leverage
        the NFSv3 WCC to service the proxying of times (See Section 4 of <xref
        target='I-D.ietf-nfsv4-delstid' format='default' sectionFormat='of'/>).
        But the granularity of this data is limited. With client side
@@ -247,7 +247,7 @@
        pass that back to the metadata server in the NFSv4.2 attributes.
        The metadata server <bcp14>MAY</bcp14> then avoid costly
        NFSv3 GETATTR calls to the data servers. As this is a weak
-       model, the metatdata server <bcp14>MAY</bcp14> make such
+       model, the metadata server <bcp14>MAY</bcp14> make such
        calls anyway in order to strengthen the model.
      </t>
 
@@ -364,17 +364,20 @@
        </t>
 
        <table anchor='table_mappings'>
-         <tbody>
-         <tr><th>NFSv3 Attribute</th> <th>NFSv4 Attribute</th></tr>
+         <name>NFSv3 to NFSv4.2 Attribute Mappings</name>
+         <thead>
+           <tr><th>NFSv3 Attribute</th> <th>NFSv4.2 Attribute</th></tr>
+         </thead>
 
-         <tr><td>size</td>  <td>size</td></tr>
-         <tr><td>used</td>  <td>space_used</td></tr>
-         <tr><td>mode</td>  <td>mode</td></tr>
-         <tr><td>uid</td>   <td>owner</td></tr>
-         <tr><td>gid</td>   <td>owner_group</td></tr>
-         <tr><td>atime</td> <td>time_access</td></tr>
-         <tr><td>mtime</td> <td>time_modify</td></tr>
-         <tr><td>ctime</td> <td>time_metadata</td></tr>
+         <tbody>
+           <tr><td>size</td>  <td>size</td></tr>
+           <tr><td>used</td>  <td>space_used</td></tr>
+           <tr><td>mode</td>  <td>mode</td></tr>
+           <tr><td>uid</td>   <td>owner</td></tr>
+           <tr><td>gid</td>   <td>owner_group</td></tr>
+           <tr><td>atime</td> <td>time_access</td></tr>
+           <tr><td>mtime</td> <td>time_modify</td></tr>
+           <tr><td>ctime</td> <td>time_metadata</td></tr>
          </tbody>
        </table>
 
@@ -396,16 +399,20 @@
       can be considered as an extension of Section 15.2 of <xref target='RFC8881'
       format='default' sectionFormat='of'/>.
      </t>
-     <t keepWithNext='true'>Valid Error Returns for LAYOUT_WCC</t>
      <table anchor='tbl_op_error_returns' align='center'>
+       <name>Operations and Their Valid Errors</name>
        <thead>
          <tr>
-           <th align='left'>Errors</th>
+           <th>Operation</th>
+           <th>Errors</th>
          </tr>
        </thead>
        <tbody>
          <tr>
-           <td align='left'>
+           <td>
+        LAYOUT_WCC
+           </td>
+           <td>
         NFS4ERR_ADMIN_REVOKED,
         NFS4ERR_BADXDR,
         NFS4ERR_BAD_STATEID,
@@ -443,7 +450,7 @@
     <t>
       The new LAYOUT_WCC operation is <bcp14>OPTIONAL</bcp14> for both
       NFSv4.2 (<xref target='RFC7863' format='default' sectionFormat='of'/>)
-      and the flexible files layout type (<xref target='RFC8435' format='default'
+      and the flexible file layout type (<xref target='RFC8435' format='default'
        sectionFormat='of'/>).
     </t>
   </section>
@@ -520,7 +527,7 @@
     The XDR description is embedded in this
     document in a way that makes it simple for the reader to extract
     into a ready-to-compile form.  The reader can feed this document
-    into the following shell script to produce the machine readable
+    into the following shell script to produce the machine-readable
     XDR description of the new flags:
   </t>
   <sourcecode name='' type='' markers='true'><![CDATA[
@@ -550,7 +557,7 @@ sh extract.sh < spec.txt > layout_wcc.x
   </t>
   <t>
     While the XDR can be appended to that from <xref target='RFC7863' format='default' sectionFormat='of'/>,
-    the various code snippets belong in their respective areas of the
+    the various code snippets belong in their respective areas of
     that XDR.
   </t>
   <section anchor='code_copyright' numbered='true' removeInRFC='false' toc='default'>
