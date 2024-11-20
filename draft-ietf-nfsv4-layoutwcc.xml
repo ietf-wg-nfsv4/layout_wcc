@@ -314,7 +314,7 @@
          indicate the client having issued a NFSv3 READ operation. As such,
          the client should leverage the LAYOUT_WCC operation whenever it
          has the belief that the metadata server would need to refresh
-         the attributes of the data files.  While The client can send a
+         the attributes of the data files.  While the client can send a
          LAYOUT_WCC at any time, there are times it will want to do this
          operation in order to avoid having the metadata server issue
          NFSv3 GETATTR requests to the data servers:
@@ -324,7 +324,7 @@
            Whenever it sends a GETATTR for any of the following attributes: size (see Section 5.8.1.5
            of <xref target='RFC8881' format='default' sectionFormat='of'/>), space_used (see Section 5.8.2.25
            of <xref target='RFC8881' format='default' sectionFormat='of'/>), change (see Section 5.8.1.4
-           of <xref target='RFC8881' format='default' sectionFormat='of'/>), 
+           of <xref target='RFC8881' format='default' sectionFormat='of'/>),
            time_access (see Section 5.8.2.37
            of <xref target='RFC8881' format='default' sectionFormat='of'/>), time_metadata (see Section 5.8.2.42
            of <xref target='RFC8881' format='default' sectionFormat='of'/>), and time_modify (see Section 5.8.2.43
@@ -350,9 +350,9 @@
        <t>
          The NFSv3 attributes returned in the WCC of WRITE, READ, and COMMIT are a smaller subset
          of what can be transmitted as a NFSv4 attribute. The mapping of NFSv3 to NFSv4 attributes
-         shown in <xref target='table_mappings'/> also details which attributes
-         the LAYOUT_WCC <bcp14>SHOULD</bcp14> be providing to the metadata server, Both the uid
-         and gid are stringified into their respective attributes of owner and owner_group.
+         is shown in <xref target='table_mappings'/>.
+         The LAYOUT_WCC <bcp14>MUST</bcp14> provide all of these attributes to the metadata server.
+         Both the uid and gid are stringified into their respective attributes of owner and owner_group.
          The reason to provide these two attributes is in case of NFS4ERR_ACCESS, the metadata
          server can compare what it expects the values of the uid and gid of the data file
          to be versus the actual values. It can then repair the permissions as needed or
@@ -365,6 +365,7 @@
 
          <tr><td>size</td>  <td>size</td></tr>
          <tr><td>used</td>  <td>space_used</td></tr>
+         <tr><td>mode</td>  <td>mode</td></tr>
          <tr><td>uid</td>   <td>owner</td></tr>
          <tr><td>gid</td>   <td>owner_group</td></tr>
          <tr><td>atime</td> <td>time_access</td></tr>
