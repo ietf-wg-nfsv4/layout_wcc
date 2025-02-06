@@ -40,14 +40,17 @@
   <keyword>NFSv4</keyword>
   <abstract>
     <t>
-      The Parallel Network File System (pNFS) Flexible File Layout allows
-      for a file's metadata (MDS) and data (DS) to be on different
-      servers. It does not provide a mechanism for the data server to
-      update the metadata server to changes to the data part of the
-      file. The client has knowledge of such updates, but lacks the
-      ability to update the metadata server.  This document presents a
-      refinement to RFC8435 to allow the client to update the metadata
-      server to changes on the data server.
+      This document specifies extensions to the parallel Network
+      File System (NFS) version 4 (pNFS) for improving write cache
+      consistency. These extensions introduce mechanisms that ensure
+      partial writes performed under a pNFS layout remain coherent and
+      correctly tracked. The solution addresses concurrency and data
+      integrity concerns that may arise when multiple clients write to
+      the same file through separate data servers. By defining additional
+      interactions among clients, metadata servers, and data servers, this
+      specification enhances the reliability of NFSv4 in parallel-access
+      environments and ensures consistency across diverse deployment
+      scenarios.
     </t>
   </abstract>
 
@@ -94,8 +97,8 @@
   <section anchor='sec_defs' numbered='true' removeInRFC='false' toc='default'>
     <name>Definitions</name>
     <t>
-      See Section 1.1 of <xref target='RFC8435' format='default'
-      sectionFormat='of'/> for a fuller set of definitions.
+      For a more comprehensive set of definitions, see Section 1.1 of <xref target='RFC8435' format='default'
+      sectionFormat='of'/>.
     </t>
     <dl newline='false' spacing='normal'>
       <dt>(file) data:</dt>
@@ -162,18 +165,17 @@
 <section anchor='wcc' numbered='true' removeInRFC='false' toc='default'>
   <name>Weak Cache Consistency (WCC)</name>
      <t>
-       A layout type for pNFS enables the metadata server to tell the
-       client both the storage protocol and location of data to be used
-       to communicate with the storage devices.
-       The Flex Files Layout Type (in <xref target='RFC8435' format='default'
-       sectionFormat='of'/>) details how NFSv3 data servers can be accessed.
-       The client is only allowed to perform NFSv3 READ (see Section 3.3.6 of <xref target='RFC1813'
-       format='default' sectionFormat='of'/>), WRITE (see Section 3.3.6 of <xref target='RFC1813'
-       format='default' sectionFormat='of'/>), and COMMIT (see Section 3.3.21 of <xref target='RFC1813'
-        format='default' sectionFormat='of'/>)
-       operations on the file handles provided in the layout. I.e., the client
-       is only allowed to use NFSv3 operations which directly act on the data portion of the
-       data file.
+       A pNFS layout type enables the metadata server to inform the client
+       of both the storage protocol and the locations of the data that the
+       client should use when communicating with the storage devices. The
+       Flex Files Layout Type, as specified in <xref target='RFC8435'
+       />, describes how data servers using NFSv3 can be accessed. The
+       client is restricted to performing NFSv3 READ (Section 3.3.6
+       of <xref target='RFC1813'/> WRITE (Section 3.3.6 of <xref
+       target='RFC1813'/> and COMMIT (Section 3.3.21 of <xref
+       target='RFC1813'/> operations on the file handles provided in the
+       layout. In other words, the client may only use NFSv3 operations
+       that act directly on the data portion of the file.
      </t>
      <t>
        Because
@@ -198,27 +200,27 @@
        in a NFSv4.2 GETATTR response.
      </t>
      <t>
-       For example, the metadata server
-       would issue a NFSv3 GETATTR to the data server. This query
-       is most likely triggered in response to a NFSv4 GETATTR issued by a client to the
-       metadata server. Not only are these NFSv3 GETATTRs to the data server
-       individually expensive, the data server can become inundated by
-       a storm of such requests. NFSv3 solved a similar issue by having
-       the READ and WRITE operations employ a post-operation attribute
-       to report the weak cache consistency (WCC) data (See Section 2.6
-       of <xref target='RFC1813' format='default' sectionFormat='of'/>).
+       For example, the metadata server might issue an NFSv3 GETATTR
+       operation to the data server, which is typically triggered by
+       a client’s NFSv4 GETATTR request to the metadata server. In
+       addition to the cost of each individual GETATTR operation,
+       the data server can be overwhelmed by a large volume of such
+       requests. NFSv3 addressed a similar challenge by including a
+       post-operation attribute in the READ and WRITE operations to
+       report weak cache consistency (WCC) data (see Section 2.6 of
+       <xref target='RFC1813' />).
      </t>
      <t>
-       Each NFSv3 operation corresponds to one round trip between the
-       client and server. So a WRITE followed by a GETATTR would require
-       two round trips. In that scenario, the attribute information
-       retrieved is considered to be strict server-client consistency.
-       For NFSv4, the WRITE and GETATTR can
-       be issued together inside a compound, which only requires one round
-       trip between the client and server. And this is also considered
-       to be a strict server-client consistency. In essence, the NFSv4
-       READ and WRITE operations drop the post-operation attributes,
-       allowing the client to decide if it needs that information.
+       Each NFSv3 operation entails a single round trip between the
+       client and server.  Consequently, issuing a WRITE followed by
+       a GETATTR would require two round trips. In that situation, the
+       retrieved attribute information is regarded as strict server-client
+       consistency. By contrast, NFSv4 enables a WRITE and GETATTR to
+       be combined within a compound operation, which requires only
+       one round trip. This combined approach is likewise considered
+       strict server-client consistency. Essentially, NFSv4 READ and
+       WRITE operations omit post-operation attributes, allowing the
+       client to determine whether it requires that information.
      </t>
      <t>
        Whilst NFSv4 got rid of the requirement for WCC information to
@@ -239,16 +241,16 @@
        that information only when it returns the delegation.
      </t>
      <t>
-       In this document, we present a new NFSv4.2 operation called
-       LAYOUT_WCC, which allows the client to update the metadata
-       server with information from the data server. The client
-       is responsible for taking the NFSv3 WCC information (which
-       is returned by the 3 operations it is allowed to use) and
-       pass that back to the metadata server in the NFSv4.2 attributes.
-       The metadata server <bcp14>MAY</bcp14> then avoid costly
-       NFSv3 GETATTR calls to the data servers. As this is a weak
-       model, the metadata server <bcp14>MAY</bcp14> make such
-       calls anyway in order to strengthen the model.
+       This document introduces a new NFSv4.2 operation, LAYOUT_WCC,
+       which enables the client to provide the metadata server with
+       information obtained from the data server. The client is
+       responsible for gathering the NFSv3 WCC data, returned by the
+       three permissible NFSv3 operations, and conveying it back to
+       the metadata server as part of NFSv4.2 attributes. The metadata
+       server <bcp14>MAY</bcp14> therefore avoid issuing costly NFSv3
+       GETATTR calls to the data servers. Because this approach relies
+       on a weak model, the metadata server <bcp14>MAY</bcp14> still
+       perform these calls if it chooses to strengthen the model.
      </t>
 
 </section>
@@ -286,23 +288,25 @@
    <section toc='exclude' anchor='ss_op_LAYOUT_WCC_D' numbered='true'>
      <name>DESCRIPTION</name>
      <t>
-       The current filehandle and the lowa_stateid identifies the
-       particular layout for the LAYOUT_WCC operation. The lowa_type
-       indicates how to unpack the layout type specific payload inside
-       the lowa_body field. The lowa_type is defined to be a value from
-       the IANA registry for 'pNFS Layout Types Registry'.
+       The current filehandle and the lowa_stateid identify the specific
+       layout for the LAYOUT_WCC operation. The lowa_type indicates how
+       to interpret the layout-type-specific payload contained in the
+       lowa_body field. The lowa_type is the corresponding value
+       from the IANA registry for 'pNFS Layout Types' for the layout
+       type being used.
      </t>
      <t>
-       The lowa_body will contain the data file attributes. The client
-       will be responsible for mapping the NFSv3 post-operation attributes
-       to those in a fattr4.  Just as the post-operation attributes may be
-       ignored by the client, the server may ignore the attributes inside
-       the LAYOUT_WCC.  But the server can also use those attributes to
-       avoid querying the data server for the data file attributes.
-       Note that as these attributes are optional and there is nothing
-       the client can do if the server ignores one, there is no need to
-       return a bitmap4 of which attributes were accepted in the result
-       of the LAYOUT_WCC.
+       The lowa_body contains the data file attributes. The client is
+       responsible for mapping NFSv3 post-operation attributes to the
+       fattr4 representation. Similar to the behavior of post-operation
+       attributes, the client may ignore these attributes, and the
+       server may also choose to ignore any attributes included in
+       LAYOUT_WCC. However, the server can use these attributes to avoid
+       querying the data server for data file attributes. Because these
+       attributes are optional and the client has no recourse if the
+       server opts to disregard them, there is no requirement to return
+       a bitmap4 indicating which attributes have been accepted in the
+       LAYOUT_WCC result.
      </t>
    </section>
 
