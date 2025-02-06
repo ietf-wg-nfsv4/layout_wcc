@@ -41,7 +41,7 @@
   <abstract>
     <t>
       This document specifies extensions to the parallel Network
-      File System (NFS) version 4 (pNFS) for improving write cache
+      File System (NFS) version 4 (pNFS) for improving write cache
       consistency. These extensions introduce mechanisms that ensure
       partial writes performed under a pNFS layout remain coherent and
       correctly tracked. The solution addresses concurrency and data
@@ -170,10 +170,10 @@
        client should use when communicating with the storage devices. The
        Flex Files Layout Type, as specified in <xref target='RFC8435'
        />, describes how data servers using NFSv3 can be accessed. The
-       client is restricted to performing NFSv3 READ (Section 3.3.6
-       of <xref target='RFC1813'/> WRITE (Section 3.3.6 of <xref
-       target='RFC1813'/> and COMMIT (Section 3.3.21 of <xref
-       target='RFC1813'/> operations on the file handles provided in the
+       client is restricted to performing NFSv3 READ (Section 3.3.6
+       of <xref target='RFC1813'/>), WRITE (Section 3.3.6 of <xref
+       target='RFC1813'/>), and COMMIT (Section 3.3.21 of <xref
+       target='RFC1813'/>) operations on the file handles provided in the
        layout. In other words, the client may only use NFSv3 operations
        that act directly on the data portion of the file.
      </t>
@@ -202,12 +202,12 @@
      <t>
        For example, the metadata server might issue an NFSv3 GETATTR
        operation to the data server, which is typically triggered by
-       a client’s NFSv4 GETATTR request to the metadata server. In
+       a client's NFSv4 GETATTR request to the metadata server. In
        addition to the cost of each individual GETATTR operation,
        the data server can be overwhelmed by a large volume of such
        requests. NFSv3 addressed a similar challenge by including a
        post-operation attribute in the READ and WRITE operations to
-       report weak cache consistency (WCC) data (see Section 2.6 of
+       report weak cache consistency (WCC) data (see Section 2.6 of
        <xref target='RFC1813' />).
      </t>
      <t>
