@@ -580,7 +580,7 @@ sh extract.sh < spec.txt > layout_wcc.x
   <name>Security Considerations</name>
   <t>
     There are no new security considerations beyond those in
-    <xref target='RFC7862' format='default' sectionFormat='of'/>.
+    <xref target='RFC8435' format='default' sectionFormat='of'/>.
   </t>
 </section>
 
